@@ -1,3 +1,4 @@
+
 // =========================================
 // BUDI LED — WEBSITE INTERACTIONS
 // =========================================
@@ -21,24 +22,50 @@ const header = document.querySelector(".site-header");
 const themeToggle = document.querySelector("#theme-toggle");
 const themeMeta = document.querySelector('meta[name="theme-color"]');
 
-const savedTheme = localStorage.getItem("budi-led-theme");
+const THEME_STORAGE_KEY = "budi-led-theme";
 
-const systemPrefersLight = window.matchMedia(
-  "(prefers-color-scheme: light)"
-).matches;
+// Membaca tema dengan aman
+function getSavedTheme() {
+  try {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
 
-// Prioritas:
-// 1. Tema pilihan manual yang tersimpan.
-// 2. Preferensi tema perangkat jika belum pernah memilih.
+    // Hanya menerima nilai yang valid
+    return savedTheme === "light" || savedTheme === "dark"
+      ? savedTheme
+      : null;
 
-const initialTheme =
-  savedTheme || (systemPrefersLight ? "light" : "dark");
+  } catch (error) {
+    return null;
+  }
+}
 
 
-// Terapkan tema
+// Membaca preferensi tema perangkat
+function getSystemTheme() {
+  try {
+    return window.matchMedia("(prefers-color-scheme: light)").matches
+      ? "light"
+      : "dark";
+
+  } catch (error) {
+    return "dark";
+  }
+}
+
+
+// Prioritas tema:
+// 1. Pilihan manual yang tersimpan.
+// 2. Preferensi perangkat.
+const initialTheme = getSavedTheme() || getSystemTheme();
+
+
+// Menerapkan tema
 function applyTheme(theme) {
 
-  const isLight = theme === "light";
+  const validTheme =
+    theme === "light" ? "light" : "dark";
+
+  const isLight = validTheme === "light";
 
   document.body.classList.toggle("light-mode", isLight);
 
@@ -54,7 +81,7 @@ function applyTheme(theme) {
     );
   }
 
-  // Sesuaikan warna browser mobile
+  // Menyesuaikan warna browser mobile
   if (themeMeta) {
     themeMeta.setAttribute(
       "content",
@@ -65,7 +92,7 @@ function applyTheme(theme) {
 }
 
 
-// Terapkan tema awal
+// Menerapkan tema awal
 applyTheme(initialTheme);
 
 
@@ -79,11 +106,14 @@ themeToggle?.addEventListener("click", () => {
 
   applyTheme(newTheme);
 
-  // Simpan pilihan manual pengunjung
-  localStorage.setItem("budi-led-theme", newTheme);
+  // Simpan pilihan tema secara aman
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+  } catch (error) {
+    // Website tetap berfungsi meskipun penyimpanan gagal.
+  }
 
 });
-
 
 
 // =========================================
@@ -92,6 +122,7 @@ themeToggle?.addEventListener("click", () => {
 
 // Fungsi scroll ke section
 function scrollToSection(target) {
+
   if (!target) return;
 
   const headerHeight = header ? header.offsetHeight : 0;
@@ -105,21 +136,26 @@ function scrollToSection(target) {
     top: targetPosition,
     behavior: "smooth"
   });
+
 }
 
 
 // Fungsi menutup menu mobile
 function closeMobileMenu() {
+
   navMenu?.classList.remove("open");
 
   menuToggle?.setAttribute("aria-expanded", "false");
   menuToggle?.setAttribute("aria-label", "Buka menu");
+
 }
 
 
 // Navigasi navbar
 navLinks.forEach((link) => {
+
   link.addEventListener("click", (event) => {
+
     const targetId = link.getAttribute("href");
 
     if (!targetId || !targetId.startsWith("#")) return;
@@ -136,7 +172,9 @@ navLinks.forEach((link) => {
 
     // Perbarui URL tanpa reload halaman
     history.pushState(null, "", targetId);
+
   });
+
 });
 
 
@@ -148,6 +186,7 @@ if (menuToggle && navMenu) {
 
   // Tombol buka/tutup menu
   menuToggle.addEventListener("click", () => {
+
     const isOpen = navMenu.classList.toggle("open");
 
     menuToggle.setAttribute("aria-expanded", String(isOpen));
@@ -156,17 +195,20 @@ if (menuToggle && navMenu) {
       "aria-label",
       isOpen ? "Tutup menu" : "Buka menu"
     );
+
   });
 
 
   // Tutup menu ketika klik di luar navigasi
   document.addEventListener("click", (event) => {
+
     if (
       !navMenu.contains(event.target) &&
       !menuToggle.contains(event.target)
     ) {
       closeMobileMenu();
     }
+
   });
 
 }
@@ -186,9 +228,11 @@ if ("IntersectionObserver" in window) {
       entries.forEach((entry) => {
 
         if (entry.isIntersecting) {
+
           entry.target.classList.add("is-visible");
 
           observer.unobserve(entry.target);
+
         }
 
       });
@@ -206,7 +250,7 @@ if ("IntersectionObserver" in window) {
 
 } else {
 
-  // Fallback untuk browser yang tidak mendukung IntersectionObserver
+  // Fallback browser lama
   revealItems.forEach((item) => {
     item.classList.add("is-visible");
   });
@@ -312,27 +356,69 @@ if (consultationForm) {
     event.preventDefault();
 
 
-    // Ambil data dari form
-    const nama = document.querySelector("#nama")?.value.trim() || "";
+    // Ambil data form
+    const nama =
+      consultationForm.querySelector("#nama")?.value.trim() || "";
 
-    const whatsapp = document.querySelector("#whatsapp")?.value.trim() || "";
+    const whatsapp =
+      consultationForm.querySelector("#whatsapp")?.value.trim() || "";
 
     const produk =
-      consultationForm.querySelector('[name="produk"]')?.value || "";
+      consultationForm.querySelector('[name="produk"]')?.value.trim() || "";
 
-    const lokasi = document.querySelector("#lokasi")?.value.trim() || "";
+    const lokasi =
+      consultationForm.querySelector("#lokasi")?.value.trim() || "";
 
-    const pesan = document.querySelector("#pesan")?.value.trim() || "";
+    const pesan =
+      consultationForm.querySelector("#pesan")?.value.trim() || "";
 
 
-    // Bersihkan nomor WhatsApp dari karakter selain angka
+    // Validasi nama
+    if (!nama || nama.length > 100) {
+
+      alert("Nama harus diisi dan maksimal 100 karakter.");
+
+      return;
+
+    }
+
+
+    // Bersihkan nomor dari karakter selain angka
     const nomorBersih = whatsapp.replace(/\D/g, "");
 
 
-    // Validasi nomor WhatsApp
-    if (nomorBersih.length < 8) {
+    // Validasi panjang nomor WhatsApp
+    if (nomorBersih.length < 8 || nomorBersih.length > 15) {
 
-      alert("Silakan masukkan nomor WhatsApp yang valid.");
+      alert("Silakan masukkan nomor WhatsApp dengan 8–15 digit.");
+
+      return;
+
+    }
+
+
+    // Validasi produk
+    if (!produk) {
+
+      alert("Silakan pilih produk yang diminati.");
+
+      return;
+
+    }
+
+
+    // Validasi panjang lokasi dan pesan
+    if (lokasi.length > 120) {
+
+      alert("Lokasi proyek maksimal 120 karakter.");
+
+      return;
+
+    }
+
+    if (pesan.length > 1000) {
+
+      alert("Pesan maksimal 1000 karakter.");
 
       return;
 

@@ -747,100 +747,111 @@
             dan tim Budi LED siap membantu menemukan solusi
             yang sesuai untuk bisnis Anda.
           </p>
-
         </div>
 
+<!-- FORM KONSULTASI -->
+<form class="consultation-form" id="consultation-form">
 
-        <!-- FORM KONSULTASI -->
-        <form class="consultation-form" id="consultation-form">
+  <div class="form-group">
 
-          <div class="form-group">
+    <label for="nama">Nama Lengkap</label>
 
-            <label for="nama">Nama Lengkap</label>
+    <input
+      type="text"
+      id="nama"
+      name="nama"
+      placeholder="Masukkan nama Anda"
+      autocomplete="name"
+      maxlength="100"
+      required
+    >
 
-            <input
-              type="text"
-              id="nama"
-              name="nama"
-              placeholder="Masukkan nama Anda"
-              required
-            >
-
-          </div>
-
-
-          <div class="form-group">
-
-            <label for="whatsapp">Nomor WhatsApp</label>
-
-            <input
-              type="tel"
-              id="whatsapp"
-              name="whatsapp"
-              placeholder="Contoh: 081234567890"
-              required
-            >
-
-          </div>
+  </div>
 
 
-          <div class="form-group">
+  <div class="form-group">
 
-            <label for="produk">Produk yang Diminati</label>
+    <label for="whatsapp">Nomor WhatsApp</label>
 
-            <select id="produk" name="produk" required>
+    <input
+      type="tel"
+      id="whatsapp"
+      name="whatsapp"
+      placeholder="Contoh: 081234567890"
+      autocomplete="tel"
+      inputmode="tel"
+      maxlength="20"
+      required
+    >
 
-              <option value="" disabled selected>
-                Pilih kebutuhan LED
-              </option>
-
-              <option value="Running Text">Running Text</option>
-              <option value="LED Display Indoor">LED Display Indoor</option>
-              <option value="LED Display Outdoor">LED Display Outdoor</option>
-              <option value="Videotron">Videotron</option>
-              <option value="Lainnya">Lainnya</option>
-
-            </select>
-
-          </div>
+  </div>
 
 
-          <div class="form-group">
+  <div class="form-group">
 
-            <label for="lokasi">Lokasi Proyek</label>
+    <label for="produk">Produk yang Diminati</label>
 
-            <input
-              type="text"
-              id="lokasi"
-              name="lokasi"
-              placeholder="Kota atau lokasi proyek"
-            >
+    <select
+      id="produk"
+      name="produk"
+      required
+    >
 
-          </div>
+      <option value="" disabled selected>
+        Pilih kebutuhan LED
+      </option>
 
+      <option value="Running Text">Running Text</option>
+      <option value="LED Display Indoor">LED Display Indoor</option>
+      <option value="LED Display Outdoor">LED Display Outdoor</option>
+      <option value="Videotron">Videotron</option>
+      <option value="Lainnya">Lainnya</option>
 
-          <div class="form-group">
+    </select>
 
-            <label for="pesan">Ceritakan Kebutuhan Anda</label>
-
-            <textarea
-              id="pesan"
-              name="pesan"
-              rows="4"
-              placeholder="Tuliskan kebutuhan atau pertanyaan Anda..."
-            ></textarea>
-
-          </div>
+  </div>
 
 
-          <button
-            type="submit"
-            class="button button-gold contact-button"
-          >
-            Kirim Konsultasi <span>↗</span>
-          </button>
+  <div class="form-group">
 
-        </form>
+    <label for="lokasi">Lokasi Proyek</label>
+
+    <input
+      type="text"
+      id="lokasi"
+      name="lokasi"
+      placeholder="Kota atau lokasi proyek"
+      autocomplete="address-level2"
+      maxlength="120"
+    >
+
+  </div>
+
+
+  <div class="form-group">
+
+    <label for="pesan">Ceritakan Kebutuhan Anda</label>
+
+    <textarea
+      id="pesan"
+      name="pesan"
+      rows="4"
+      placeholder="Tuliskan kebutuhan atau pertanyaan Anda..."
+      maxlength="1000"
+    ></textarea>
+
+  </div>
+
+
+  <button
+    type="submit"
+    class="button button-gold contact-button"
+  >
+    Kirim Konsultasi <span>↗</span>
+  </button>
+
+</form>
+
 
       </div>
 

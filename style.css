@@ -1736,6 +1736,11 @@ h3 {
   transform: rotate(12deg);
 }
 
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 4px;
+}
+
 .theme-icon {
   width: 19px;
   height: 19px;
